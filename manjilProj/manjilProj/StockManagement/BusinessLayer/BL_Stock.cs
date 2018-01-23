@@ -9,25 +9,30 @@ namespace StockManagement.BusinessLayer
 {
     public class BL_Stock
     {
+
         DL_Stock objDl = new DL_Stock();
         public ServiceResult<Stock> CreateStock(Stock stock)
         {
-            var dubcheck = objDl.getList().Where(a => a.StockName == stock.StockName);
-            if (!string.IsNullOrEmpty(dubcheck.ToString()))
+            var isValidStock = objDl.getList().Where(a => a.StockName == stock.StockName).FirstOrDefault();
+            if (!string.IsNullOrEmpty(isValidStock.StockName.ToString()))
             {
                 return new ServiceResult<Stock>()
                 {
                     Data = null,
-                    Message = "Stock Name '" + dubcheck.ToString() + "' Already Exists...!!! ",
+                    Message = "Stock Name '" + isValidStock.StockName.ToString() + "' Already Exists...!!! ",
                     Status = ResultStatus.Failed
                 };
             }
-            return new ServiceResult<Stock>()
+            else
             {
-                Data = null,
-                Message = "Stock Name '" + dubcheck.ToString() + "' Already Exists...!!! ",
-                Status = ResultStatus.Failed
-            };
+              var a=  objDl.SaveStock(stock);
+                return new ServiceResult<Stock>()
+                {
+                    Data = null,
+                    Message = "Stock Name '" + stock.StockName.ToString() + "' Added Successfully...!!! ",
+                    Status = ResultStatus.Success
+                };
+            }
 
         }
     }

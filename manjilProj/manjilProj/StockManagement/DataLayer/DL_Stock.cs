@@ -12,6 +12,7 @@ namespace StockManagement.DataLayer
     public class DL_Stock
     {
         private readonly ConnectionDB _context;
+
         public DL_Stock()
         {
             _context = new ConnectionDB();
@@ -21,6 +22,18 @@ namespace StockManagement.DataLayer
         public IQueryable<Stock> getList()
         {
             return  _context.Stock;
+        }
+
+        public ServiceResult<Stock> SaveStock(Stock stock)
+        {
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                _context.Add(stock);
+                _context.SaveChanges();
+                dbContextTransaction.Commit();
+            }
+
+            return new ServiceResult<Stock>() { Data = null, Message = "Success", Status = ResultStatus.Success };
         }
     }
 }
