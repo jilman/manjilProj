@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Entity.ViewModel.StockReceiveMastVM>
+
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<div class="form-horizontal col-md-offset-1">
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.ValueDate)*@
+                    <label asp-for="@Model.FirstOrDefault().ValueDate"></label>
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.PortfolioAcName)*@
+                    <label asp-for="@Model.FirstOrDefault().PortfolioAcName"></label>
+                </th>
+                <th>
+                    @*  @Html.DisplayNameFor(model => model.Remarks)*@
+                    <label asp-for="@Model.FirstOrDefault().Remarks"></label>
+                </th>
+
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>
+
+                        @item.ValueDate.ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+
+                        @item.PortfolioAcName
+                    </td>
+                    <td>
+
+                        @item.Remarks
+                    </td>
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
