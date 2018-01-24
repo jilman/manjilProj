@@ -356,7 +356,8 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a as ><i class="fa fa-circle-o"></i> Stock </a></li>
+                            <li><a asp-action="Index" asp-controller="Stock" asp-area="Areas" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace"
+   data-ajax-update="#Manjil-body" ><i class="fa fa-circle-o"></i> Stock </a></li>
                             <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
                             <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
                             <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
@@ -717,9 +718,11 @@
     <script>
         $.widget.bridge('uibutton', $.ui.button);
     </script>
-    <script src= "~/lib/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.js" ></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src= "~/lib/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.js" ></script>
+   
+    
     <!-- Bootstrap 3.3.7 -->
     <script src="~/Theme/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Morris.js charts -->

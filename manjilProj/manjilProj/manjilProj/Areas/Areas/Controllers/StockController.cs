@@ -21,7 +21,22 @@ namespace manjilProj.Areas.Areas.Controllers
         // GET: Stock
         public ActionResult Index()
         {
-            return View();
+            //var StockReceiveMast = _context.StockReceiveMast.Include(s => s.PortfolioAccounts);
+            //List<StockReceiveMastVM> stockReceiveVM = await _context.StockReceiveMast.Select(a => new StockReceiveMastVM
+            //{
+            //    Id = a.Id,
+            //    EntryDate = a.EntryDate,
+            //    EntryUserID = a.EntryUserID,
+            //    PortfolioAcId = a.PortfolioAcId,
+            //    PortfolioAcName = a.PortfolioAccounts.AccountName,
+            //    Remarks = a.Remarks,
+            //    ValueDate = a.ValueDate
+
+            ////}).ToListAsync();
+            BL_Stock objBl = new BL_Stock();
+            List<Stock> lstStock = objBl.PopulateList().ToList();
+
+            return View(lstStock);
         }
 
         // GET: Stock/Details/5
@@ -93,23 +108,30 @@ namespace manjilProj.Areas.Areas.Controllers
         // GET: Stock/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            BL_Stock objBl = new BL_Stock();
+            Stock stock = objBl.GetListbyId(id);
+
+            return View(stock);
+            
         }
 
         // POST: Stock/Delete/5
         [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult DeleteConfirmed(int id)
         {
+            ServiceResult<Stock> result = new ServiceResult<Stock>();
             try
             {
                 // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                BL_Stock objBl = new BL_Stock();
+                result = objBl.DeleteStock(id);
+                return Json(new ServiceResult<Stock>() { Data = null, Message = result.Message, Status = result.Status });
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                return Json(new ServiceResult<Stock>() { Data = null, Message = ex.Message, Status = ResultStatus.Exception });
             }
         }
     }

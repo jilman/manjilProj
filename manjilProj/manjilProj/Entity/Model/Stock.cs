@@ -22,6 +22,7 @@ namespace Entity.Model
 
         [Required]
         [StringLength(100)]
+        [Display(Name = "Stock Name")]
         public string StockName { get; set; }
     }
 }

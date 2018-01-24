@@ -14,10 +14,12 @@ namespace Entity.Model
 
         [Required]
         [StringLength(20)]
+        [Display(Name = "A/c Number")]
         public string AccountNumber { get; set; }
 
         [Required]
         [StringLength(50)]
+        [Display(Name = "A/c Name")]
         public string AccountName { get; set; }
 
 

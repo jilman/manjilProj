@@ -5,14 +5,14 @@
 }
 
 
-<h4>Stock</h4>
+<h4>Create Stock</h4>
 <hr />
 
 <div class="row">
     <div class="col-md-4 col-sm-offset-1">
         <form asp-action="Create" asp-controller="Stock" asp-route-area="Areas"
-              data-ajax="true" data-ajax-method="POST" data-ajax-success="SuccessData(result,this)">
-            <a asp-action="index" data-ajax="true"></a>
+              data-ajax="true" data-ajax-method="POST" data-ajax-success="onSuccess(data)" >
+          
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
@@ -28,16 +28,23 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="Stock" asp-area="Areas" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace"
+       data-ajax-update="#Manjil-body" id="Index">Back to List</a>
 </div>
 
 
 
 <script>
-    succ(){
-        if (data.res)
-            asdfsd
+    function onSuccess(data) {
+       
+        if (data.status == 1)
+        { 
+            alert(data.message);
+            $('#Index').click();
+        }
+        else {
+            alert(data.message);
 
-
+        }
     }
 </script>

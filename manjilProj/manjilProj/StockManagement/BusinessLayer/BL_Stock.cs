@@ -14,7 +14,7 @@ namespace StockManagement.BusinessLayer
         public ServiceResult<Stock> CreateStock(Stock stock)
         {
             var isValidStock = objDl.getList().Where(a => a.StockName == stock.StockName).FirstOrDefault();
-            if (!string.IsNullOrEmpty(isValidStock.StockName.ToString()))
+            if (isValidStock!=null)
             {
                 return new ServiceResult<Stock>()
                 {
@@ -34,6 +34,42 @@ namespace StockManagement.BusinessLayer
                 };
             }
 
+        }
+
+
+        public IQueryable<Stock> PopulateList()
+        {
+           return  objDl.getList();
+        }
+
+        public Stock GetListbyId(int id)
+        {
+            return objDl.getList().Where(a=>a.Id==id).FirstOrDefault();
+        }
+
+        public ServiceResult<Stock> DeleteStock(int id)
+        {
+            var isValidId = objDl.getList().Where(a => a.Id==id).FirstOrDefault();
+            if (isValidId != null)
+            {
+               var a= objDl.DeleteStock(id);
+                return new ServiceResult<Stock>()
+                {
+                    Data = null,
+                    Message = a.Message,
+                    Status = a.Status
+                };
+            }
+            else
+            {
+               
+                return new ServiceResult<Stock>()
+                {
+                    Data = null,
+                    Message = "Stock Not found for the Deletions...!!! ",
+                    Status = ResultStatus.Failed
+                };
+            }
         }
     }
 }

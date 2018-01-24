@@ -35,5 +35,17 @@ namespace StockManagement.DataLayer
 
             return new ServiceResult<Stock>() { Data = null, Message = "Success", Status = ResultStatus.Success };
         }
+
+        public ServiceResult<Stock> DeleteStock(int id)
+        {
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                var stock =  _context.Stock.SingleOrDefault(m => m.Id == id);
+                _context.Stock.Remove(stock);
+                _context.SaveChanges();
+                dbContextTransaction.Commit();
+            }
+            return new ServiceResult<Stock>() { Data = null, Message = "Deleted Successfully", Status = ResultStatus.Success };
+        }
     }
 }
