@@ -1,12 +1,13 @@
 ﻿@model IEnumerable<Entity.ViewModel.StockReceiveMastVM>
 
 @{
-    Layout = "_LayoutAdmin";
+    Layout = null;
 }
 
 <div class="form-horizontal col-md-offset-1">
     <p>
-        <a asp-action="Create">Create New</a>
+        <a asp-action="Create" asp-controller="StockReceiveMasts" asp-area="Areas" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace"
+           data-ajax-update="#Manjil-body" >Create New</a>
     </p>
     <table class="table">
         <thead>

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Entity.Connection;
 using Entity.Model;
 using Entity.ViewModel;
+using StockManagement.BusinessLayer;
 
 namespace manjilProj.Areas.Areas.Controllers
 {
@@ -22,23 +23,12 @@ namespace manjilProj.Areas.Areas.Controllers
         }
 
         // GET: Areas/StockReceiveMasts
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var StockReceiveMast = _context.StockReceiveMast.Include(s => s.PortfolioAccounts);
-            List<StockReceiveMastVM> stockReceiveVM = await _context.StockReceiveMast.Select(a => new StockReceiveMastVM
-            {
-                Id = a.Id,
-                EntryDate = a.EntryDate,
-                EntryUserID = a.EntryUserID,
-                PortfolioAcId = a.PortfolioAcId,
-                PortfolioAcName = a.PortfolioAccounts.AccountName,
-                Remarks = a.Remarks,
-                ValueDate = a.ValueDate
+            BL_StockReceive objBl = new BL_StockReceive();
+            List<StockReceiveMastVM> lstStockReceive = objBl.PopulateIndexList();
 
-            }).ToListAsync();
-
-
-            return View(stockReceiveVM);
+            return View(lstStockReceive);
         }
 
         // GET: Stock/StockReceiveMasts/Details/5
@@ -49,43 +39,50 @@ namespace manjilProj.Areas.Areas.Controllers
                 return NotFound();
             }
 
-            var stockReceiveMast = await _context.StockReceiveMast.Include(b => b.PortfolioAccounts).Include(a => a.StockReceiveDetls).ThenInclude(x => x.Stocks).Where(m => m.Id == id).FirstOrDefaultAsync();
+            //var stockReceiveMast = await _context.StockReceiveMast.Include(b => b.PortfolioAccounts).Include(a => a.StockReceiveDetls).ThenInclude(x => x.Stocks).Where(m => m.Id == id).FirstOrDefaultAsync();
 
-            StockReceiveMastVM stockModelVM = new StockReceiveMastVM
-            {
-                Id = stockReceiveMast.Id,
-                ValueDate = stockReceiveMast.ValueDate,
-                PortfolioAcId = stockReceiveMast.PortfolioAcId,
-                PortfolioAcName = stockReceiveMast.PortfolioAccounts.AccountName,
-                Remarks = stockReceiveMast.Remarks,
-                StockRecieveDetlVM = stockReceiveMast.StockReceiveDetls.Select(a => new StockRecieveDetlVM
-                {
-                    MastId = a.MastId,
-                    Id = a.Id,
-                    StockId = a.StockId,
-                    Qty = a.Qty,
-                    Rate = a.Rate,
-                    StockName = a.Stocks.StockName,
-                    OwnershipDate = a.OwnershipDate
+            //StockReceiveMastVM stockModelVM = new StockReceiveMastVM
+            //{
+            //    Id = stockReceiveMast.Id,
+            //    ValueDate = stockReceiveMast.ValueDate,
+            //    PortfolioAcId = stockReceiveMast.PortfolioAcId,
+            //    PortfolioAcName = stockReceiveMast.PortfolioAccounts.AccountName,
+            //    Remarks = stockReceiveMast.Remarks,
+            //    StockRecieveDetlVM = stockReceiveMast.StockReceiveDetls.Select(a => new StockRecieveDetlVM
+            //    {
+            //        MastId = a.MastId,
+            //        Id = a.Id,
+            //        StockId = a.StockId,
+            //        Qty = a.Qty,
+            //        Rate = a.Rate,
+            //        StockName = a.Stocks.StockName,
+            //        OwnershipDate = a.OwnershipDate
 
-                }).ToList()
-            };
-            if (stockReceiveMast == null)
-            {
-                return NotFound();
-            }
-            ViewBag.PortfolioAcId = new SelectList(_context.PortfolioAccount, "Id", "AccountName");
-            ViewBag.StockId = new SelectList(_context.Stock, "Id", "StockName");
+            //    }).ToList()
+            //};
+            //if (stockReceiveMast == null)
+            //{
+            //    return NotFound();
+            //}
+            //ViewBag.PortfolioAcId = new SelectList(_context.PortfolioAccount, "Id", "AccountName");
+            //ViewBag.StockId = new SelectList(_context.Stock, "Id", "StockName");
 
-            return View(stockModelVM);
+            //return View(stockModelVM);
+            BL_StockReceive objBl = new BL_StockReceive();
+            StockReceiveMastVM stockReceive = await objBl.GetListbyId(id);
+            return View(stockReceive);
+
         }
 
         // GET: Stock/StockReceiveMasts/Create
         public IActionResult Create()
         {
-            ViewBag.PortfolioAcId = new SelectList(_context.PortfolioAccount, "Id", "AccountName");
-            ViewBag.StockId = new SelectList(_context.Stock, "Id", "StockName");
+
+            BL_StockReceive objBl = new BL_StockReceive();
+            ViewBag.PortfolioAcId = new SelectList(objBl.PopulatePortFolioList(), "Id", "AccountName");
+            ViewBag.StockId = new SelectList(objBl.PopulateStockList(), "Id", "StockName");
             return View();
+
         }
 
         // POST: Stock/StockReceiveMasts/Create
@@ -95,30 +92,31 @@ namespace manjilProj.Areas.Areas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(StockReceiveMastVM stockReceiveMastVM)
         {
-            var stockReceiveMast = new StockReceiveMast();
-            stockReceiveMast.EntryDate = System.DateTime.Now.Date;
-            stockReceiveMast.EntryUserID = 1;
-            if (ModelState.IsValid)
+
+            ServiceResult<StockReceiveMastVM> result = new ServiceResult<StockReceiveMastVM>();
+            try
             {
-                stockReceiveMast.PortfolioAcId = stockReceiveMastVM.PortfolioAcId;
-                stockReceiveMast.ValueDate = stockReceiveMastVM.ValueDate;
-                stockReceiveMast.Remarks = stockReceiveMastVM.Remarks;
-                stockReceiveMast.StockReceiveDetls = stockReceiveMastVM.StockRecieveDetlVM.Select(a => new StockReceiveDetl
+                BL_StockReceive objBl = new BL_StockReceive();
+
+                stockReceiveMastVM.EntryDate = System.DateTime.Now.Date;
+                stockReceiveMastVM.EntryUserID = 1;
+                if (ModelState.IsValid)
                 {
-                    StockId = a.StockId,
-                    OwnershipDate = a.OwnershipDate,
-                    Qty = a.Qty,
-                    Rate = a.Rate
+                    result = objBl.CreateStockReceive(stockReceiveMastVM);
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = result.Message, Status = result.Status });
+                }
+                else
+                {
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = ModelState.Values.SelectMany(a => a.Errors).Select(b => b.ErrorMessage).ToString(), Status = ResultStatus.Failed });
+                }
 
 
-                }).ToList();
-
-                _context.Add(stockReceiveMast);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // return RedirectToAction(nameof(Index));
             }
-            ViewData["PortfolioAcId"] = new SelectList(_context.PortfolioAccount, "Id", "AccountName", stockReceiveMast.PortfolioAcId);
-            return View(stockReceiveMast);
+            catch (Exception ex)
+            {
+                return Json(new ServiceResult<Stock>() { Data = null, Message = ex.Message, Status = ResultStatus.Exception });
+            }
         }
 
         // GET: Stock/StockReceiveMasts/Edit/5
@@ -181,7 +179,7 @@ namespace manjilProj.Areas.Areas.Controllers
                     EntryUserID = 1,
                     Remarks = data.Remarks,
                     ValueDate = data.ValueDate,
-                    PortfolioAcId=data.PortfolioAcId,
+                    PortfolioAcId = data.PortfolioAcId,
                     StockReceiveDetls = data.StockRecieveDetlVM.Where(a => a.Flag == Flag.New).Select(a => new StockReceiveDetl
                     {
                         Id = a.Id,
