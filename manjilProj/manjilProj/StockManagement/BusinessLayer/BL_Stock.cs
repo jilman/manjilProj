@@ -19,7 +19,7 @@ namespace StockManagement.BusinessLayer
                 return new ServiceResult<Stock>()
                 {
                     Data = null,
-                    Message = "Stock Name '" + isValidStock.StockName.ToString() + "' Already Exists...!!! ",
+                    Message = "Stock Name " + isValidStock.StockName.ToString() + " Already Exists...!!! ",
                     Status = ResultStatus.Failed
                 };
             }
@@ -69,6 +69,44 @@ namespace StockManagement.BusinessLayer
                     Message = "Stock Not found for the Deletions...!!! ",
                     Status = ResultStatus.Failed
                 };
+            }
+        }
+
+        public ServiceResult<Stock> EditStock(Stock stock)
+        {
+            Stock model = objDl.getList().Where(a => a.StockName == stock.StockName).FirstOrDefault();
+            if (model != null)
+            {
+                return new ServiceResult<Stock>()
+                {
+                    Data = null,
+                    Message = "Stock Name " + model.StockName.ToString() + " Already Exists...!!! ",
+                    Status = ResultStatus.Failed
+                };
+            }
+            else
+            {
+                model = objDl.getList().Where(c=> c.Id == stock.Id).FirstOrDefault();
+                if (model == null) {
+                    return new ServiceResult<Stock>()
+                    {
+                        Data = null,
+                        Message = "No Data Found For Delete...!!! ",
+                        Status = ResultStatus.Failed
+                    };
+                }
+                else
+                {
+                    model.StockName = stock.StockName;
+                    var a = objDl.UpdateStock(model);
+
+                    return new ServiceResult<Stock>()
+                    {
+                        Data = null,
+                        Message = "Stock Name '" + stock.StockName.ToString() + "' Edited Successfully...!!! ",
+                        Status = ResultStatus.Success
+                    };
+                }
             }
         }
     }

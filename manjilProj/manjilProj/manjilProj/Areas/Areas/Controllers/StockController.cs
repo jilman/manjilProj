@@ -85,23 +85,36 @@ namespace manjilProj.Areas.Areas.Controllers
         // GET: Stock/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            BL_Stock objBl = new BL_Stock();
+            Stock stock = objBl.GetListbyId(id);
+
+            return View(stock);
+           
         }
 
         // POST: Stock/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Stock stock)
         {
+            ServiceResult<Stock> result = new ServiceResult<Stock>();
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                // TODO: Add delete logic here
+                BL_Stock objBl = new BL_Stock();
+                if (ModelState.IsValid)
+                {
+                    result = objBl.EditStock(stock);
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = result.Message, Status = result.Status });
+                }
+                else
+                {
+                    return Json(new ServiceResult<Stock>() { Data = null, Message =ModelState.Values.SelectMany(x=>x.Errors).Select(a=>a.ErrorMessage).ToString(), Status = result.Status });
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return Json(new ServiceResult<Stock>() { Data = null, Message = ex.Message, Status = ResultStatus.Exception });
             }
         }
 

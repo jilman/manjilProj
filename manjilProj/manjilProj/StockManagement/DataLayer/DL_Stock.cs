@@ -17,11 +17,11 @@ namespace StockManagement.DataLayer
         {
             _context = new ConnectionDB();
         }
-       
-        
+
+
         public IQueryable<Stock> getList()
         {
-            return  _context.Stock;
+            return _context.Stock;
         }
 
         public ServiceResult<Stock> SaveStock(Stock stock)
@@ -30,6 +30,7 @@ namespace StockManagement.DataLayer
             {
                 _context.Add(stock);
                 _context.SaveChanges();
+                
                 dbContextTransaction.Commit();
             }
 
@@ -40,12 +41,24 @@ namespace StockManagement.DataLayer
         {
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                var stock =  _context.Stock.SingleOrDefault(m => m.Id == id);
+                var stock = _context.Stock.SingleOrDefault(m => m.Id == id);
                 _context.Stock.Remove(stock);
                 _context.SaveChanges();
                 dbContextTransaction.Commit();
             }
             return new ServiceResult<Stock>() { Data = null, Message = "Deleted Successfully", Status = ResultStatus.Success };
+        }
+
+        public ServiceResult<Stock> UpdateStock(Stock stock)
+        {
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                _context.Update(stock);
+                _context.SaveChanges();
+                dbContextTransaction.Commit();
+            }
+
+            return new ServiceResult<Stock>() { Data = null, Message = "Edited Successfully", Status = ResultStatus.Success };
         }
     }
 }
