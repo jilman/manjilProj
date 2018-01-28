@@ -156,6 +156,9 @@ namespace manjilProj.Areas.Areas.Controllers
             ViewBag.StockId = new SelectList(_context.Stock, "Id", "StockName");
 
             return View(stockModelVM);
+            //BL_StockReceive objBl = new BL_StockReceive();
+            //StockReceiveMastVM stockReceive = await objBl.GetListbyId(id);
+            //return View(stockReceive);
         }
 
         // POST: Stock/StockReceiveMasts/Edit/5
@@ -208,8 +211,8 @@ namespace manjilProj.Areas.Areas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewBag.PortfolioAcId = new SelectList(_context.PortfolioAccount, "Id", "AccountName", stockReceiveMastVM.PortfolioAcId);
             return RedirectToAction(nameof(Index));
+
         }
 
         // GET: Stock/StockReceiveMasts/Delete/5
@@ -220,35 +223,36 @@ namespace manjilProj.Areas.Areas.Controllers
                 return NotFound();
             }
 
-            var stockReceiveMast = await _context.StockReceiveMast.Include(b => b.PortfolioAccounts).Include(a => a.StockReceiveDetls).ThenInclude(x => x.Stocks).Where(m => m.Id == id).FirstOrDefaultAsync();
+            //var stockReceiveMast = await _context.StockReceiveMast.Include(b => b.PortfolioAccounts).Include(a => a.StockReceiveDetls).ThenInclude(x => x.Stocks).Where(m => m.Id == id).FirstOrDefaultAsync();
 
-            StockReceiveMastVM stockModelVM = new StockReceiveMastVM
-            {
-                Id = stockReceiveMast.Id,
-                ValueDate = stockReceiveMast.ValueDate,
-                PortfolioAcId = stockReceiveMast.PortfolioAcId,
-                PortfolioAcName = stockReceiveMast.PortfolioAccounts.AccountName,
-                Remarks = stockReceiveMast.Remarks,
-                StockRecieveDetlVM = stockReceiveMast.StockReceiveDetls.Select(a => new StockRecieveDetlVM
-                {
-                    MastId = a.MastId,
-                    Id = a.Id,
-                    StockId = a.StockId,
-                    Qty = a.Qty,
-                    Rate = a.Rate,
-                    StockName = a.Stocks.StockName,
-                    OwnershipDate = a.OwnershipDate
+            //StockReceiveMastVM stockModelVM = new StockReceiveMastVM
+            //{
+            //    Id = stockReceiveMast.Id,
+            //    ValueDate = stockReceiveMast.ValueDate,
+            //    PortfolioAcId = stockReceiveMast.PortfolioAcId,
+            //    PortfolioAcName = stockReceiveMast.PortfolioAccounts.AccountName,
+            //    Remarks = stockReceiveMast.Remarks,
+            //    StockRecieveDetlVM = stockReceiveMast.StockReceiveDetls.Select(a => new StockRecieveDetlVM
+            //    {
+            //        MastId = a.MastId,
+            //        Id = a.Id,
+            //        StockId = a.StockId,
+            //        Qty = a.Qty,
+            //        Rate = a.Rate,
+            //        StockName = a.Stocks.StockName,
+            //        OwnershipDate = a.OwnershipDate
 
-                }).ToList()
-            };
-            if (stockReceiveMast == null)
-            {
-                return NotFound();
-            }
-            ViewBag.PortfolioAcId = new SelectList(_context.PortfolioAccount, "Id", "AccountName");
-            ViewBag.StockId = new SelectList(_context.Stock, "Id", "StockName");
-
-            return View(stockModelVM);
+            //    }).ToList()
+            //};
+            //if (stockReceiveMast == null)
+            //{
+            //    return NotFound();
+            //}
+            //ViewBag.PortfolioAcId = new SelectList(_context.PortfolioAccount, "Id", "AccountName");
+            //ViewBag.StockId = new SelectList(_context.Stock, "Id", "StockName");
+            BL_StockReceive objBl = new BL_StockReceive();
+            StockReceiveMastVM stockReceive = await objBl.GetListbyId(id);
+            return View(stockReceive);
         }
 
         // POST: Stock/StockReceiveMasts/Delete/5
@@ -256,10 +260,22 @@ namespace manjilProj.Areas.Areas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var stockReceiveMast = await _context.StockReceiveMast.SingleOrDefaultAsync(m => m.Id == id);
-            _context.StockReceiveMast.Remove(stockReceiveMast);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //var stockReceiveMast = await _context.StockReceiveMast.SingleOrDefaultAsync(m => m.Id == id);
+            //_context.StockReceiveMast.Remove(stockReceiveMast);
+            //await _context.SaveChangesAsync();
+            //return RedirectToAction(nameof(Index));
+            ServiceResult<StockReceiveMastVM> result = new ServiceResult<StockReceiveMastVM>();
+            try
+            {
+                // TODO: Add delete logic here
+                BL_StockReceive objBl = new BL_StockReceive();
+                result =  objBl.DeleteStock(id);
+                return Json(new ServiceResult<StockReceiveMastVM>() { Data = null, Message = result.Message, Status = result.Status });
+            }
+            catch (Exception ex)
+            {
+                return Json(new ServiceResult<StockReceiveMastVM>() { Data = null, Message = ex.Message, Status = ResultStatus.Exception });
+            }
         }
 
         private bool StockReceiveMastExists(int id)

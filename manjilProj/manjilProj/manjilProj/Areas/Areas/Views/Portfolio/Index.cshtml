@@ -1,22 +1,31 @@
 ﻿@model IEnumerable<Entity.Model.PortfolioAccount>
 
+@{
+    Layout = null;
+}
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-controller="Portfolio" asp-area="Areas" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace"
+       data-ajax-update="#Manjil-body">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.AccountNumber)
+                    @*@Html.DisplayNameFor(model => model.AccountNumber)*@
+                    <label asp-for="@Model.FirstOrDefault().AccountNumber"></label>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.AccountName)
+                    @*@Html.DisplayNameFor(model => model.AccountName)*@
+                    <label asp-for="@Model.FirstOrDefault().AccountName"></label>
+
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.EntryDate)
+                    @*@Html.DisplayNameFor(model => model.EntryDate)*@
+                    <label asp-for="@Model.FirstOrDefault().EntryDate"></label>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.EntryUserID)
+                    @*@Html.DisplayNameFor(model => model.EntryUserID)*@
+                    <label asp-for="@Model.FirstOrDefault().EntryUserID"></label>
                 </th>
             <th></th>
         </tr>
@@ -25,20 +34,23 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.AccountNumber)
+                @*@Html.DisplayFor(modelItem => item.AccountNumber)*@
+                @item.AccountNumber
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AccountName)
+                @*@Html.DisplayFor(modelItem => item.AccountName)*@
+                @item.AccountName
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EntryDate)
+                @*@Html.DisplayFor(modelItem => item.EntryDate)*@
+                @item.EntryDate.ToString("yyyy/MM/dd")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EntryUserID)
+                @*@Html.DisplayFor(modelItem => item.EntryUserID)*@
+                @item.EntryUserID
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>

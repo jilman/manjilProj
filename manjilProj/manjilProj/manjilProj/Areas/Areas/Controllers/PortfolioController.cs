@@ -4,15 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Entity.Model;
+using StockManagement.BusinessLayer;
 
 namespace manjilProj.Areas.Areas.Controllers
 {
+    [Area("Areas")]
     public class PortfolioController : Controller
     {
         // GET: Portfolio
         public ActionResult Index()
         {
-            return View();
+            BL_Portfolio objBl = new BL_Portfolio();
+            List<PortfolioAccount> lstPortfolio = objBl.PopulateList().ToList();
+
+            return View(lstPortfolio);
+            
         }
 
         // GET: Portfolio/Details/5
@@ -30,17 +37,31 @@ namespace manjilProj.Areas.Areas.Controllers
         // POST: Portfolio/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(PortfolioAccount portfolio)
         {
+            ServiceResult<PortfolioAccount> result = new ServiceResult<PortfolioAccount>();
             try
             {
+                BL_Portfolio objBl = new BL_Portfolio();
                 // TODO: Add insert logic here
+                portfolio.EntryDate = DateTime.Now;
+                portfolio.EntryUserID = 1;
+                if (ModelState.IsValid)
+                {
+                    result = objBl.CreatePortfolio(portfolio);
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = result.Message, Status = result.Status });
+                }
+                else
+                {
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = ModelState.Values.SelectMany(a => a.Errors).Select(b => b.ErrorMessage).ToString(), Status = ResultStatus.Failed });
+                }
 
-                return RedirectToAction(nameof(Index));
+
+                // return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return Json(new ServiceResult<Stock>() { Data = null, Message = ex.Message, Status = ResultStatus.Exception });
             }
         }
 
@@ -70,23 +91,29 @@ namespace manjilProj.Areas.Areas.Controllers
         // GET: Portfolio/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            BL_Portfolio objBl = new BL_Portfolio();
+            PortfolioAccount portfolio = objBl.GetListbyId(id);
+
+            return View(portfolio);
         }
 
         // POST: Portfolio/Delete/5
         [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult DeleteConfirmed(int id)
         {
+            ServiceResult<PortfolioAccount> result = new ServiceResult<PortfolioAccount>();
             try
             {
                 // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                BL_Portfolio objBl = new BL_Portfolio();
+                result = objBl.DeletePortfolio(id);
+                return Json(new ServiceResult<Stock>() { Data = null, Message = result.Message, Status = result.Status });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return Json(new ServiceResult<Stock>() { Data = null, Message = ex.Message, Status = ResultStatus.Exception });
             }
         }
     }

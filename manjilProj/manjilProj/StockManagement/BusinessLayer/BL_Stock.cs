@@ -91,7 +91,7 @@ namespace StockManagement.BusinessLayer
                     return new ServiceResult<Stock>()
                     {
                         Data = null,
-                        Message = "No Data Found For Delete...!!! ",
+                        Message = "No Data Found For Edit...!!! ",
                         Status = ResultStatus.Failed
                     };
                 }

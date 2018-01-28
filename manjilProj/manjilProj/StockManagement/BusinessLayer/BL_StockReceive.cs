@@ -111,5 +111,30 @@ namespace StockManagement.BusinessLayer
             };
             return stockReceiveVM;
         }
+
+        public ServiceResult<StockReceiveMastVM> DeleteStock(int id)
+        {
+            StockReceiveMast stockReceiveMast = objDl.getList().Result.Where(m => m.Id == id).FirstOrDefault();
+            if (stockReceiveMast != null)
+            {
+                var a = objDl.DeleteStock(id);
+                return new ServiceResult<StockReceiveMastVM>()
+                {
+                    Data = null,
+                    Message = a.Message,
+                    Status = a.Status
+                };
+            }
+            else
+            {
+
+                return new ServiceResult<StockReceiveMastVM>()
+                {
+                    Data = null,
+                    Message = "Stock Not found for the Deletions...!!! ",
+                    Status = ResultStatus.Failed
+                };
+            }
+        }
     }
 }

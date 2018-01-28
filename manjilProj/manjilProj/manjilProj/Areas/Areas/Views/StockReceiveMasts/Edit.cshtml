@@ -17,7 +17,7 @@
     <hr />
     <div class="row">
         
-        <div class="col-md-12">
+        <div class="col-md-12 col-sm-offset-0">
             <form asp-action="Edit">
                 <div class="form-group">
                     <input type="submit" value="Update" class="btn btn-default" />
@@ -29,7 +29,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="ValueDate" class="control-label"></label>
-                            <input asp-for="ValueDate" class="form-control" placeholder="__/__/__" />
+                            <input asp-for="ValueDate" class="form-control" placeholder="____/__/__" />
                             <span asp-validation-for="ValueDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -109,7 +109,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input id="OwnershipDate" class="form-control input-sm " autocomplete="off" placeholder="____-__-__" />
+                                    <input id="OwnershipDate" class="form-control input-sm " autocomplete="off" placeholder="____/__/__" />
                                 </td>
                                 <td>
                                     <input id="Qty" class="form-control input-sm  text-right get-amount" autocomplete="off" />
