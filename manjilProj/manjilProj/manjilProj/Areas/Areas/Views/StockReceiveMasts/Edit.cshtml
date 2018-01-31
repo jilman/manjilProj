@@ -1,156 +1,150 @@
 ﻿@model Entity.ViewModel.StockReceiveMastVM
 
 @{
-    Layout = "_LayoutAdmin";
+    Layout = null ;
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
+<h4>StockReceiveMast</h4>
+<hr />
+<div class="row">
 
-    <h4>StockReceiveMast</h4>
-    <hr />
-    <div class="row">
-        
-        <div class="col-md-12 col-sm-offset-0">
-            <form asp-action="Edit">
-                <div class="form-group">
-                    <input type="submit" value="Update" class="btn btn-default" />
-                </div>
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <div class="col-md-4">
-                    <div class="form-horizontal">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
-                            <label asp-for="ValueDate" class="control-label"></label>
-                            <input asp-for="ValueDate" class="form-control" placeholder="____/__/__" />
-                            <span asp-validation-for="ValueDate" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="PortfolioAcId" class="control-label"></label>
-                            <select asp-for="PortfolioAcId" class="form-control" asp-items="@ViewBag.PortfolioAcId">
-                                <option value="0">Select</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Remarks" class="control-label"></label>
-                            <input asp-for="Remarks" class="form-control" />
-                            <span asp-validation-for="Remarks" class="text-danger"></span>
-                        </div>
+    <div class="col-md-12 col-sm-offset-0">
+        <form asp-action="Edit" asp-controller="StockReceiveMasts" asp-route-area="Areas"
+              data-ajax="true" data-ajax-method="POST" data-ajax-success="onSuccess(data)">
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-default" />
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="col-md-4">
+                <div class="form-horizontal">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="ValueDate" class="control-label"></label>
+                        <input asp-for="ValueDate" class="form-control" placeholder="____/__/__" />
+                        <span asp-validation-for="ValueDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PortfolioAcId" class="control-label"></label>
+                        <select asp-for="PortfolioAcId" class="form-control" asp-items="@ViewBag.PortfolioAcId">
+                            <option value="0">Select</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Remarks" class="control-label"></label>
+                        <input asp-for="Remarks" class="form-control" />
+                        <span asp-validation-for="Remarks" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
 
-                <div class="form-group col-md-12">
-                    <table class="table table-bordered col-md-12" id="detail_table">
-                        <thead class="md-default">
-                            <tr>
-                                <th class="col-md-3  ">
-                                    Stock Name
-                                </th>
-                                <th class="col-md-1  ">
-                                    OwnerShip Date
-                                </th>
-                                <th class="col-md-1  ">
-                                    Qty
-                                </th>
-                                <th class="col-md-1  ">
-                                    Rate
-                                </th>
-                                <th class="col-md-1  ">
-                                    Amount
-                                </th>
-                                <th class="col-sm-1  ">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                int i = 0;
-                                foreach (var item in Model.StockRecieveDetlVM)
-                                {
-                                    var amount = item.Qty * item.Rate;
-                                    <tr>
-                                        <td>
-                                            <input type="hidden" name="StockRecieveDetlVM[@i].StockId" value="@item.StockId" readonly="readonly" autocomplete="off"  />
-                                            <input type="hidden" name="StockRecieveDetlVM[@i].Id" value="@item.Id" readonly="readonly" autocomplete="off" class="ze-id"/>
-                                            <input type="hidden" name="StockRecieveDetlVM[@i].Flag" value="0" readonly="readonly" autocomplete="off" class="ze-flag" />
-                                            <input type="hidden" name="StockRecieveDetlVM[@i].MastId" value="@item.MastId" readonly="readonly" autocomplete="off" />
-                                            <input type="text" name="StockRecieveDetlVM[@i].StockName" value="@item.StockName" readonly="readonly" autocomplete="off" />
-                                        </td>
-                                        <td>
-                                            <input type="text" name="StockRecieveDetlVM[@i].OwnershipDate" value="@item.OwnershipDate" readonly="readonly" autocomplete="off" />
-                                        </td>
-                                        <td>
-                                            <input type="text" name="StockRecieveDetlVM[@i].Qty" value="@item.Qty" readonly="readonly" autocomplete="off" class="text-right" />
-                                        </td>
-                                        <td>
-                                            <input type="text" name="StockRecieveDetlVM[@i].Rate" value="@item.Rate" readonly="readonly" autocomplete="off" class="text-right" />
-                                        </td>
-                                        <td>
-                                            <input type="text" name="StockRecieveDetlVM[@i].Amount" value="@amount" readonly="readonly" autocomplete="off" class="text-right" />
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-sm btn-delete" title="Delete">Delete</a>
-                                        </td>
-                                    </tr>
-
-                                }
+            <div class="form-group col-md-12">
+                <table class="table table-bordered col-md-12" id="detail_table">
+                    <thead class="md-default">
+                        <tr>
+                            <th class="col-md-3  ">
+                                Stock Name
+                            </th>
+                            <th class="col-md-1  ">
+                                OwnerShip Date
+                            </th>
+                            <th class="col-md-1  ">
+                                Qty
+                            </th>
+                            <th class="col-md-1  ">
+                                Rate
+                            </th>
+                            <th class="col-md-1  ">
+                                Amount
+                            </th>
+                            <th class="col-sm-1  ">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 0;
+                            foreach (var item in Model.StockRecieveDetlVM)
+                            {
+                                var amount = item.Qty * item.Rate;
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="StockRecieveDetlVM[@i].StockId" value="@item.StockId" readonly="readonly" autocomplete="off" />
+                                        <input type="hidden" name="StockRecieveDetlVM[@i].Id" value="@item.Id" readonly="readonly" autocomplete="off" class="ze-id" />
+                                        <input type="hidden" name="StockRecieveDetlVM[@i].Flag" value="0" readonly="readonly" autocomplete="off" class="ze-flag" />
+                                        <input type="hidden" name="StockRecieveDetlVM[@i].MastId" value="@item.MastId" readonly="readonly" autocomplete="off" />
+                                        <input type="text" name="StockRecieveDetlVM[@i].StockName" value="@item.StockName" readonly="readonly" autocomplete="off" />
+                                    </td>
+                                    <td>
+                                        <input type="text" name="StockRecieveDetlVM[@i].OwnershipDate" value="@item.OwnershipDate" readonly="readonly" autocomplete="off" />
+                                    </td>
+                                    <td>
+                                        <input type="text" name="StockRecieveDetlVM[@i].Qty" value="@item.Qty" readonly="readonly" autocomplete="off" class="text-right" />
+                                    </td>
+                                    <td>
+                                        <input type="text" name="StockRecieveDetlVM[@i].Rate" value="@item.Rate" readonly="readonly" autocomplete="off" class="text-right" />
+                                    </td>
+                                    <td>
+                                        <input type="text" name="StockRecieveDetlVM[@i].Amount" value="@amount" readonly="readonly" autocomplete="off" class="text-right" />
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-sm btn-delete" title="Delete">Delete</a>
+                                    </td>
+                                </tr>
+                                i++;
                             }
-                            <tr>
-                                <td>
-                                    <select id="StockId" class="form-control" asp-items="@ViewBag.StockId">
-                                        <option value="0">Select</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input id="OwnershipDate" class="form-control input-sm " autocomplete="off" placeholder="____/__/__" />
-                                </td>
-                                <td>
-                                    <input id="Qty" class="form-control input-sm  text-right get-amount" autocomplete="off" />
-                                </td>
-                                <td>
-                                    <input id="Rate" class="form-control input-sm  text-right get-amount" autocomplete="off" />
-                                </td>
-                                <td>
-                                    <input id="Amount" class="form-control input-sm  text-right" readonly="readonly" />
-                                </td>
-                                <td>
-                                    <button type="button" class="btn" id="btn-add" data-target="">Add</button>
-                                    <button type="button" class="btn " id="btn-clear">clear</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </form>
-        </div>
+                        }
+                        <tr>
+                            <td>
+                                <select id="StockId" class="form-control" asp-items="@ViewBag.StockId">
+                                    <option value="0">Select</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input id="OwnershipDate" class="form-control input-sm " autocomplete="off" placeholder="____/__/__" />
+                            </td>
+                            <td>
+                                <input id="Qty" class="form-control input-sm  text-right get-amount" autocomplete="off" />
+                            </td>
+                            <td>
+                                <input id="Rate" class="form-control input-sm  text-right get-amount" autocomplete="off" />
+                            </td>
+                            <td>
+                                <input id="Amount" class="form-control input-sm  text-right" readonly="readonly" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn" id="btn-add" data-target="">Add</button>
+                                <button type="button" class="btn " id="btn-clear">clear</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
     </div>
+</div>
 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script type="text/javascript">
-        var $table = $('#detail_table>tbody');
-        $table.on('click', '.btn-delete', function () {
-            $this = $(this);
-            if ($this.closest('tr').find('.ze-id').val() > 0) {
-                $this.closest('tr').find('.ze-flag').val(1);
-                $this.closest('tr').hide();
-            }
-            else {
-                $this.closest('tr').remove();
-            }
-        });
+<div>
+    <a asp-action="Index" asp-controller="StockReceiveMasts" asp-area="Areas" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace"
+       data-ajax-update="#Manjil-body" id="Index">Back to List</a>
+</div>
+@*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+<script type="text/javascript">
+    var $table = $('#detail_table>tbody');
+    $table.on('click', '.btn-delete', function () {
+        $this = $(this);
+        if ($this.closest('tr').find('.ze-id').val() > 0) {
+            $this.closest('tr').find('.ze-flag').val(1);
+            $this.closest('tr').hide();
+        }
+        else {
+            $this.closest('tr').remove();
+        }
+    });
 
-        function Addrow(index) {
-            var addtr = '<tr>\
+    function Addrow(index) {
+        var addtr = '<tr>\
                         <td>\
                             <input value="' + $('#StockId').val() + '" name="StockRecieveDetlVM[' + index + '].StockId" class="form-control input-sm" type="hidden" readonly="readonly" style="height:0px,width=0px"/>\
                             <input value="' + $('#StockId option:selected').text() + '" name="StockRecieveDetlVM[' + index + '].StockName" class="form-control input-sm" type="text" readonly="readonly"/>\
@@ -161,29 +155,39 @@
                         <td><input value="' + parseFloat($('#Amount').val()).toFixed(2) + '" name="StockRecieveDetlVM[' + index + '].Amount" class="text-bold form-control  text-right amount" readonly="readonly"/></td>\
                         <td><a class="table-action-nav-btn btn btn-sm btn-delete" title="Delete">Delete</a>\
                     </tr>\ ';
-            return addtr;
-        }
-
-        $('.get-amount').on('change', function () {
-            var qty = Number.parseInt($('#Qty').val());
-            var rate = Number.parseFloat($('#Rate').val());
-            $('#Amount').val((qty * rate).toFixed(2));
-
-        });
-
-        $('#btn-add').click(function () {
-            $this = $(this);
-            var index = parseInt($table.find('tr').length) - 1;
-            var addtr = Addrow(index);
-            $table.find('tr:eq(' + index + ')').before(addtr);
-            $this.closest('tr').find(':input').each(function () {
-                $(this).val('');
-            });
-        });
-    </script>
-
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        return addtr;
     }
-</body>
-</html>
+
+    $('.get-amount').on('change', function () {
+        var qty = Number.parseInt($('#Qty').val());
+        var rate = Number.parseFloat($('#Rate').val());
+        $('#Amount').val((qty * rate).toFixed(2));
+
+    });
+
+    $('#btn-add').click(function () {
+        $this = $(this);
+        var index = parseInt($table.find('tr').length) - 1;
+        var addtr = Addrow(index);
+        $table.find('tr:eq(' + index + ')').before(addtr);
+        $this.closest('tr').find(':input').each(function () {
+            $(this).val('');
+        });
+    });
+
+
+    function onSuccess(data) {
+        debugger;
+        if (data.status == 1) {
+            alert(data.message);
+            console.log(data.status+'test');
+           $('#Index').click();
+        }
+        else {
+            //alert(data.message);
+
+        }
+    }
+</script>
+
+

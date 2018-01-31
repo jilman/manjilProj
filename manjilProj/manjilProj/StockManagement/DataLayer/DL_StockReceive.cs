@@ -55,12 +55,27 @@ namespace StockManagement.DataLayer
         {
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                var stockReceive = _context.Stock.SingleOrDefault(m => m.Id == id);
-                _context.Stock.Remove(stockReceive);
+                var stockReceive = _context.StockReceiveMast.SingleOrDefault(m => m.Id == id);
+                _context.StockReceiveMast.Remove(stockReceive);
                 _context.SaveChanges();
                 dbContextTransaction.Commit();
             }
             return new ServiceResult<StockReceiveMast>() { Data = null, Message = "Deleted Successfully", Status = ResultStatus.Success };
+        }
+
+        public ServiceResult<StockReceiveMast> UpdateStock(List<StockReceiveDetl> lstStockDetl, StockReceiveMast stockReceiveMast)
+        {
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+
+                _context.RemoveRange(lstStockDetl);
+                _context.SaveChangesAsync();
+                _context.Update(stockReceiveMast);
+                _context.SaveChanges();
+                dbContextTransaction.Commit();
+            }
+            return new ServiceResult<StockReceiveMast>() { Data = null, Message = "Updated Successfully", Status = ResultStatus.Success };
         }
     }
 }

@@ -4,11 +4,11 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit" asp-controller="Stock" asp-area="Areas" data-ajax="true" data-ajax-method="POST" data-ajax-success="onSuccess(data)">
+        <form asp-action="Edit" asp-controller="Stock" asp-area="Areas" data-ajax="true" data-ajax-method="POST" data-ajax-success="onSuccess(data,this)">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input asp-for="EntryDate" class="form-control" type="hidden" />
-            <input asp-for="EntryUserID" class="form-control" type="hidden"/>
+            <input asp-for="EntryUserID" class="form-control" type="hidden" />
             <div class="form-group">
                 <label asp-for="StockName" class="control-label"></label>
                 <input asp-for="StockName" class="form-control" />
@@ -29,14 +29,13 @@
 
 
 <script>
-    function onSuccess(data) {
+    function onSuccess(data, that) {
         debugger;
-        if (data.status == 1)
-        {
-           alert(data.message);
-            $('#Index').click();
-           
-           
+        if (data.status == 1) {
+            alert(data.message);
+            // $('#Index').click();
+            $(that).find('input[type = text]').val('');
+
         }
         else {
             alert(data.message);

@@ -136,5 +136,58 @@ namespace StockManagement.BusinessLayer
                 };
             }
         }
+
+        public ServiceResult<StockReceiveMastVM> UpdateStock(StockReceiveMastVM data)
+        {
+            StockReceiveMast stockReceiveMast = new StockReceiveMast
+            {
+                Id = data.Id,
+                EntryDate = data.EntryDate,
+                EntryUserID = data.EntryUserID,
+                Remarks = data.Remarks,
+                ValueDate = data.ValueDate,
+                PortfolioAcId = data.PortfolioAcId,
+                StockReceiveDetls = data.StockRecieveDetlVM.Where(a => a.Flag == Flag.New).Select(a => new StockReceiveDetl
+                {
+                    Id = a.Id,
+                    MastId = a.MastId,
+                    OwnershipDate = a.OwnershipDate,
+                    Qty = a.Qty,
+                    Rate = a.Rate,
+                    StockId = a.StockId
+                }).ToList()
+
+            };
+
+            List<StockReceiveDetl> lstStockDetl = data.StockRecieveDetlVM.Where(a => a.Flag == Flag.Deleted).Select(a => new StockReceiveDetl
+            {
+                Id = a.Id,
+                MastId = a.MastId,
+                OwnershipDate = a.OwnershipDate,
+                Qty = a.Qty,
+                Rate = a.Rate,
+                StockId = a.StockId
+            }).ToList();
+            if (stockReceiveMast.StockReceiveDetls.Count == 0)
+            {
+                return new ServiceResult<StockReceiveMastVM>()
+                {
+                    Data = null,
+                    Message = "Warning -! Without the Details data cannot be Saved ..!!! ",
+                    Status = ResultStatus.Failed
+                };
+            }
+            else
+            {
+               var toUpdate= objDl.UpdateStock(lstStockDetl, stockReceiveMast);
+                return new ServiceResult<StockReceiveMastVM>()
+                {
+                    Data = null,
+                    Message = toUpdate.Message,
+                    Status = toUpdate.Status
+                };
+            }
+
+        }
     }
 }

@@ -127,38 +127,14 @@ namespace manjilProj.Areas.Areas.Controllers
                 return NotFound();
             }
 
-            var stockReceiveMast = await _context.StockReceiveMast.Include(b => b.PortfolioAccounts).Include(a => a.StockReceiveDetls).ThenInclude(x => x.Stocks).Where(m => m.Id == id).FirstOrDefaultAsync();
+          
 
-            StockReceiveMastVM stockModelVM = new StockReceiveMastVM
-            {
-                Id = stockReceiveMast.Id,
-                ValueDate = stockReceiveMast.ValueDate,
-                PortfolioAcId = stockReceiveMast.PortfolioAcId,
-                PortfolioAcName = stockReceiveMast.PortfolioAccounts.AccountName,
-                Remarks = stockReceiveMast.Remarks,
-                StockRecieveDetlVM = stockReceiveMast.StockReceiveDetls.Select(a => new StockRecieveDetlVM
-                {
-                    MastId = a.MastId,
-                    Id = a.Id,
-                    StockId = a.StockId,
-                    Qty = a.Qty,
-                    Rate = a.Rate,
-                    StockName = a.Stocks.StockName,
-                    OwnershipDate = a.OwnershipDate
-
-                }).ToList()
-            };
-            if (stockReceiveMast == null)
-            {
-                return NotFound();
-            }
-            ViewBag.PortfolioAcId = new SelectList(_context.PortfolioAccount, "Id", "AccountName");
-            ViewBag.StockId = new SelectList(_context.Stock, "Id", "StockName");
-
-            return View(stockModelVM);
-            //BL_StockReceive objBl = new BL_StockReceive();
-            //StockReceiveMastVM stockReceive = await objBl.GetListbyId(id);
-            //return View(stockReceive);
+            //return View(stockModelVM);
+            BL_StockReceive objBl = new BL_StockReceive();
+            StockReceiveMastVM stockReceive = await objBl.GetListbyId(id);
+            ViewBag.PortfolioAcId = new SelectList(objBl.PopulatePortFolioList(), "Id", "AccountName");
+            ViewBag.StockId = new SelectList(objBl.PopulateStockList(), "Id", "StockName");
+            return View(stockReceive);
         }
 
         // POST: Stock/StockReceiveMasts/Edit/5
@@ -172,46 +148,27 @@ namespace manjilProj.Areas.Areas.Controllers
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            ServiceResult<StockReceiveMastVM> result = new ServiceResult<StockReceiveMastVM>();
+            try
             {
-                StockReceiveMast stockReceiveMast = new StockReceiveMast
+                BL_StockReceive objBl = new BL_StockReceive();
+
+
+                if (ModelState.IsValid)
                 {
-                    Id = data.Id,
-                    EntryDate = DateTime.Now,
-                    EntryUserID = 1,
-                    Remarks = data.Remarks,
-                    ValueDate = data.ValueDate,
-                    PortfolioAcId = data.PortfolioAcId,
-                    StockReceiveDetls = data.StockRecieveDetlVM.Where(a => a.Flag == Flag.New).Select(a => new StockReceiveDetl
-                    {
-                        Id = a.Id,
-                        MastId = a.MastId,
-                        OwnershipDate = a.OwnershipDate,
-                        Qty = a.Qty,
-                        Rate = a.Rate,
-                        StockId = a.StockId
-                    }).ToList()
 
-                };
-
-                List<StockReceiveDetl> lstStockDetl = data.StockRecieveDetlVM.Where(a => a.Flag == Flag.Deleted).Select(a => new StockReceiveDetl
+                   result= objBl.UpdateStock(data);
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = result.Message, Status = result.Status });
+                }
+                else
                 {
-                    Id = a.Id,
-                    MastId = a.MastId,
-                    OwnershipDate = a.OwnershipDate,
-                    Qty = a.Qty,
-                    Rate = a.Rate,
-                    StockId = a.StockId
-                }).ToList();
-
-                _context.RemoveRange(lstStockDetl);
-                await _context.SaveChangesAsync();
-                _context.Update(stockReceiveMast);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = ModelState.Values.SelectMany(a => a.Errors).Select(b => b.ErrorMessage).ToString(), Status = ResultStatus.Failed });
+                }
             }
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                return Json(new ServiceResult<Stock>() { Data = null, Message = ex.Message, Status = ResultStatus.Exception });
+            }
 
         }
 

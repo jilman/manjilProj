@@ -70,7 +70,7 @@ namespace manjilProj.Areas.Areas.Controllers
                 }
                 else
                 {
-                    return Json(new ServiceResult<Stock>() { Data = null, Message =ModelState.Values.SelectMany(a=>a.Errors).Select(b=>b.ErrorMessage).ToString() , Status = ResultStatus.Failed });
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)), Status = ResultStatus.Failed });  //ModelState.Values.SelectMany(a=>a.Errors).Select(b=>b.ErrorMessage).ToString()
                 }
 
                 
