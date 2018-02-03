@@ -48,7 +48,7 @@ namespace StockManagement.DataLayer
                 return new ServiceResult<PortfolioAccount>() { Data = null, Message = "Deleted Successfully", Status = ResultStatus.Success };
             }
 
-            public ServiceResult<PortfolioAccount> UpdateStock(PortfolioAccount portfolioAccount)
+            public ServiceResult<PortfolioAccount> UpdatePortfolio(PortfolioAccount portfolioAccount)
             {
                 using (var dbContextTransaction = _context.Database.BeginTransaction())
                 {

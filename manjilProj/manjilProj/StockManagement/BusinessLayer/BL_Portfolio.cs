@@ -71,43 +71,45 @@ namespace StockManagement.BusinessLayer
             }
         }
 
-        //public ServiceResult<PortfolioAccount> EditStock(PortfolioAccount stock)
-        //{
-        //    PortfolioAccount model = objDl.getList().Where(a => a.StockName == stock.StockName).FirstOrDefault();
-        //    if (model != null)
-        //    {
-        //        return new ServiceResult<PortfolioAccount>()
-        //        {
-        //            Data = null,
-        //            Message = "Stock Name " + model.StockName.ToString() + " Already Exists...!!! ",
-        //            Status = ResultStatus.Failed
-        //        };
-        //    }
-        //    else
-        //    {
-        //        model = objDl.getList().Where(c => c.Id == stock.Id).FirstOrDefault();
-        //        if (model == null)
-        //        {
-        //            return new ServiceResult<PortfolioAccount>()
-        //            {
-        //                Data = null,
-        //                Message = "No Data Found For Edit...!!! ",
-        //                Status = ResultStatus.Failed
-        //            };
-        //        }
-        //        else
-        //        {
-        //            model.StockName = stock.StockName;
-        //            var a = objDl.UpdateStock(model);
+        public ServiceResult<PortfolioAccount> EditStock(PortfolioAccount portfolio)
+        {
+            PortfolioAccount model = objDl.getList().Where(a => (a.AccountName == portfolio.AccountName) && (a.AccountNumber==portfolio.AccountNumber)).FirstOrDefault();
+            if (model != null)
+            {
+                return new ServiceResult<PortfolioAccount>()
+                {
+                    Data = null,
+                    Message = "Portfolio Name " + model.AccountName.ToString() + " Already Exists...!!! ",
+                    Status = ResultStatus.Failed
+                };
+            }
+            else
+            {
+                model = objDl.getList().Where(c => c.Id == portfolio.Id).FirstOrDefault();
+                if (model == null)
+                {
+                    return new ServiceResult<PortfolioAccount>()
+                    {
+                        Data = null,
+                        Message = "No Data Found For Edit...!!! ",
+                        Status = ResultStatus.Failed
+                    };
+                }
+                else
+                {
+                    model.AccountName = portfolio.AccountName;
+                    var a = objDl.UpdatePortfolio(model);
 
-        //            return new ServiceResult<Stock>()
-        //            {
-        //                Data = null,
-        //                Message = "Stock Name '" + stock.StockName.ToString() + "' Edited Successfully...!!! ",
-        //                Status = ResultStatus.Success
-        //            };
-        //        }
-        //    }
-        //}
+                    return new ServiceResult<PortfolioAccount>()
+                    {
+                        Data = null,
+                        Message = "Portfolio Name " + model.AccountName.ToString() + " Edited successfully...!!! ",
+                        Status = ResultStatus.Success
+                    };
+                }
+            }
+        }
+
+       
     }
 }

@@ -68,23 +68,34 @@ namespace manjilProj.Areas.Areas.Controllers
         // GET: Portfolio/Edit/5
         public ActionResult Edit(int id)
         {
+            BL_Portfolio objBl = new BL_Portfolio();
+            PortfolioAccount portfolio = objBl.GetListbyId(id);
             return View();
         }
 
         // POST: Portfolio/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(PortfolioAccount portfolio)
         {
+            ServiceResult<PortfolioAccount> result = new ServiceResult<PortfolioAccount>();
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                // TODO: Add delete logic here
+                BL_Portfolio objBl = new BL_Portfolio();
+                if (ModelState.IsValid)
+                {
+                    result = objBl.EditStock(portfolio);
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = result.Message, Status = result.Status });
+                }
+                else
+                {
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = ModelState.Values.SelectMany(x => x.Errors).Select(a => a.ErrorMessage).ToString(), Status = result.Status });
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return Json(new ServiceResult<Stock>() { Data = null, Message = ex.Message, Status = ResultStatus.Exception });
             }
         }
 
