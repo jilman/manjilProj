@@ -1,9 +1,12 @@
 ﻿@model Entity.Model.Stock
+@{
+    Layout = ViewBag.Layout;
+}
 
-<h4>Stock</h4>
+<h4>Update Stock</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 col-sm-offset-1">
         <form asp-action="Edit" asp-controller="Stock" asp-area="Areas" data-ajax="true" data-ajax-method="POST" data-ajax-success="onSuccess(data,this)">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -26,15 +29,35 @@
        data-ajax-update="#Manjil-body" id="Index">Back to List</a>
 </div>
 
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body" id="msgBody">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 
 <script>
     function onSuccess(data, that) {
-        debugger;
         if (data.status == 1) {
-            alert(data.message);
-            // $('#Index').click();
-            $(that).find('input[type = text]').val('');
+            //alert(data.message);
+           // $(that).find('input[type = text]').val('');
+            $('#msgBody').html(data.message);
+            $("#myModal").modal('show');
+            $('#Index').click();
 
         }
         else {

@@ -13,11 +13,11 @@ namespace manjilProj.Areas.Areas.Controllers
     [Area("Areas")]
     public class StockController :BaseController
     {
-        private readonly ConnectionDB _Context;
-        public StockController(ConnectionDB context)
-        {
-            _Context = context;
-        }
+        //private readonly ConnectionDB _Context;
+        //public StockController(ConnectionDB context)
+        //{
+        //    _Context = context;
+        //}
         // GET: Stock
         public ActionResult Index()
         {

@@ -32,7 +32,7 @@
        data-ajax-update="#Manjil-body" id="Index">Back to List</a>
 </div>
 
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModalCreate" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
@@ -58,10 +58,10 @@
     function onSuccess(data) {
 
         if (data.status == 1) {
-            //alert(data.message);
+          //  alert(data.message);
 
             $('#msgBody').html(data.message);
-            $("#myModal").modal('show');
+            $("#myModalCreate").modal('show');
             $('#Index').click();
         }
         else {

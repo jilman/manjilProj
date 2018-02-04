@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Entity.Model.Stock>
 
 @{
-    Layout = null;
+    Layout = ViewBag.Layout;
 }
 
 
@@ -45,8 +45,8 @@
                     @item.StockName
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" asp-controller="Stock" asp-area="Areas" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#Manjil-body">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" asp-controller="Stock" asp-area="Areas" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#Manjil-body">Delete</a>
                 </td>
             </tr>
         }
