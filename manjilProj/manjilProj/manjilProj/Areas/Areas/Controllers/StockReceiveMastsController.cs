@@ -69,6 +69,8 @@ namespace manjilProj.Areas.Areas.Controllers
 
             //return View(stockModelVM);
             BL_StockReceive objBl = new BL_StockReceive();
+            ViewBag.PortfolioAcId = new SelectList(objBl.PopulatePortFolioList(), "Id", "AccountName");
+            ViewBag.StockId = new SelectList(objBl.PopulateStockList(), "Id", "StockName");
             StockReceiveMastVM stockReceive = await objBl.GetListbyId(id);
             return View(stockReceive);
 
@@ -208,6 +210,8 @@ namespace manjilProj.Areas.Areas.Controllers
             //ViewBag.PortfolioAcId = new SelectList(_context.PortfolioAccount, "Id", "AccountName");
             //ViewBag.StockId = new SelectList(_context.Stock, "Id", "StockName");
             BL_StockReceive objBl = new BL_StockReceive();
+            ViewBag.PortfolioAcId = new SelectList(objBl.PopulatePortFolioList(), "Id", "AccountName");
+            ViewBag.StockId = new SelectList(objBl.PopulateStockList(), "Id", "StockName");
             StockReceiveMastVM stockReceive = await objBl.GetListbyId(id);
             return View(stockReceive);
         }

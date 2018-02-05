@@ -1,7 +1,7 @@
 ﻿@model Entity.ViewModel.StockReceiveMastVM
 
 @{
-    Layout = null;
+    Layout = ViewBag.Layout;
 }
 
 
@@ -21,7 +21,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="ValueDate" class="control-label"></label>
-                            <input asp-for="ValueDate" class="form-control" placeholder="____/__/__" disabled="disabled" />
+                            <input asp-for="ValueDate.ToShortDateString()" class="form-control" placeholder="____/__/__" disabled="disabled" />
                             <span asp-validation-for="ValueDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -76,7 +76,7 @@
                                             <input type="text" name="StockRecieveDetlVM[@i].StockName" value="@item.StockName" readonly="readonly" autocomplete="off" disabled="disabled" />
                                         </td>
                                         <td>
-                                            <input type="text" name="StockRecieveDetlVM[@i].OwnershipDate" value="@item.OwnershipDate" readonly="readonly" autocomplete="off" disabled="disabled"/>
+                                            <input type="text" name="StockRecieveDetlVM[@i].OwnershipDate" value="@item.OwnershipDate.ToString("yyyy/MM/dd")" readonly="readonly" autocomplete="off" disabled="disabled"/>
                                         </td>
                                         <td>
                                             <input type="text" name="StockRecieveDetlVM[@i].Qty" value="@item.Qty" readonly="readonly" autocomplete="off" class="text-right" disabled="disabled" />
@@ -89,7 +89,7 @@
                                         </td>
                                        
                                     </tr>
-
+                                    i++;
                                 }
                             }
                             @*<tr>
@@ -122,8 +122,9 @@
         </div>
     </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id" asp-controller="StockReceiveMasts" asp-area="Areas" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace"
+       data-ajax-update="#Manjil-body" >Edit</a> |
     <a asp-action="Index" asp-controller="StockReceiveMasts" asp-area="Areas" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace"
-       data-ajax-update="#Manjil-body" id="Index">Back to List</a>
+       data-ajax-update="#Manjil-body" >Back to List</a>
 </div>
 

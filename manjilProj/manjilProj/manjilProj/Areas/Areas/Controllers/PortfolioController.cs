@@ -70,7 +70,7 @@ namespace manjilProj.Areas.Areas.Controllers
         {
             BL_Portfolio objBl = new BL_Portfolio();
             PortfolioAccount portfolio = objBl.GetListbyId(id);
-            return View();
+            return View(portfolio);
         }
 
         // POST: Portfolio/Edit/5
