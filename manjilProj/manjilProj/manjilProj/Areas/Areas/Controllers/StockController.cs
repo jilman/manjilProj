@@ -109,7 +109,7 @@ namespace manjilProj.Areas.Areas.Controllers
                 }
                 else
                 {
-                    return Json(new ServiceResult<Stock>() { Data = null, Message =ModelState.Values.SelectMany(x=>x.Errors).Select(a=>a.ErrorMessage).ToString(), Status = result.Status });
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = string.Join(" | ", ModelState.Values.SelectMany(x=>x.Errors).Select(a=>a.ErrorMessage)), Status = result.Status });
                 }
             }
             catch (Exception ex)

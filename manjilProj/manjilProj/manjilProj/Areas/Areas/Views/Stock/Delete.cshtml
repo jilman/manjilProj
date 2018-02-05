@@ -10,22 +10,27 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.EntryDate)
+            @*@Html.DisplayNameFor(model => model.EntryDate)*@
+            <label asp-for="@Model.EntryDate"></label>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.EntryDate)
+            @Model.EntryDate.ToString("yyyy/MM/dd")
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.EntryUserID)
+            @*@Html.DisplayNameFor(model => model.EntryUserID)*@
+            <label asp-for="@Model.EntryUserID"></label>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.EntryUserID)
+            @Model.EntryUserID
+            @*@Html.DisplayFor(model => model.EntryUserID)*@
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.StockName)
+            @*@Html.DisplayNameFor(model => model.StockName)*@
+            <label asp-for="@Model.StockName"></label>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.StockName)
+            @*@Html.DisplayFor(model => model.StockName)*@
+            @Model.StockName
         </dd>
     </dl>
 

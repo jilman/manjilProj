@@ -22,7 +22,7 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="ValueDate" class="control-label"></label>
-                        <input asp-for="ValueDate.ToShortDateString()" class="form-control" placeholder="____/__/__" />
+                        <input asp-for="ValueDate" class="form-control" placeholder="____/__/__" data-format="yyyy/MM/dd" />
                         <span asp-validation-for="ValueDate" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -143,20 +143,7 @@
         }
     });
 
-    function Addrow(index) {
-        var addtr = '<tr>\
-                        <td>\
-                            <input value="' + $('#StockId').val() + '" name="StockRecieveDetlVM[' + index + '].StockId" class="form-control input-sm" type="hidden" readonly="readonly" style="height:0px,width=0px"/>\
-                            <input value="' + $('#StockId option:selected').text() + '" name="StockRecieveDetlVM[' + index + '].StockName" class="form-control input-sm" type="text" readonly="readonly"/>\
-        </td >\
-            <td> <input value="' + $('#OwnershipDate').val() + '" name="StockRecieveDetlVM[' + index + '].OwnershipDate" class="form-control input-sm" type="text" readonly="readonly"/>\
-                        <td><input value="' + $('#Qty').val() + '" name="StockRecieveDetlVM[' + index + '].Qty" class=" form-control  text-right" autocomplete="off" readonly=readonly /></td>\
-                        <td><input value="' + parseFloat($('#Rate').val()).toFixed(2) + '" name="StockRecieveDetlVM[' + index + '].Rate" class=" form-control  text-right" readonly="readonly"/></td>\
-                        <td><input value="' + parseFloat($('#Amount').val()).toFixed(2) + '" name="StockRecieveDetlVM[' + index + '].Amount" class="text-bold form-control  text-right amount" readonly="readonly"/></td>\
-                        <td><a class="table-action-nav-btn btn btn-sm btn-delete" title="Delete">Delete</a>\
-                    </tr>\ ';
-        return addtr;
-    }
+    
 
     $('.get-amount').on('change', function () {
         var qty = Number.parseInt($('#Qty').val());
@@ -168,13 +155,30 @@
     $('#btn-add').click(function () {
         $this = $(this);
         var index = parseInt($table.find('tr').length) - 1;
-        var addtr = Addrow(index);
+        var addtr = '<tr>\
+                        <td>\
+                            <input value="' + $('#StockId').val() + '" name="StockRecieveDetlVM[' + index + '].StockId" class="form-control input-sm" type="hidden" readonly="readonly" style="height:0px,width=0px"/>\
+                            <input value="' + $('#StockId option:selected').text() + '" name="StockRecieveDetlVM[' + index + '].StockName" class="form-control input-sm" type="text" readonly="readonly"/>\
+        </td >\
+            <td> <input value="' + $('#OwnershipDate').val() + '" name="StockRecieveDetlVM[' + index + '].OwnershipDate" class="form-control input-sm" type="text" readonly="readonly"/>\
+                        <td><input value="' + $('#Qty').val() + '" name="StockRecieveDetlVM[' + index + '].Qty" class=" form-control  text-right" autocomplete="off" readonly=readonly /></td>\
+                        <td><input value="' + parseFloat($('#Rate').val()).toFixed(2) + '" name="StockRecieveDetlVM[' + index + '].Rate" class=" form-control  text-right" readonly="readonly"/></td>\
+                        <td><input value="' + parseFloat($('#Amount').val()).toFixed(2) + '" name="StockRecieveDetlVM[' + index + '].Amount" class="text-bold form-control  text-right amount" readonly="readonly"/></td>\
+                        <td><a class="table-action-nav-btn btn btn-sm btn-delete" title="Delete">Delete</a>\
+                    </tr>\ ';
         $table.find('tr:eq(' + index + ')').before(addtr);
         $this.closest('tr').find(':input').each(function () {
             $(this).val('');
         });
     });
 
+    $('#btn-clear').click(function () {
+        $this = $(this);
+        $this.closest('tr').find(':input').each(function () {
+            $(this).val('');
+        });
+    });
+       
 
     function onSuccess(data) {
         debugger;

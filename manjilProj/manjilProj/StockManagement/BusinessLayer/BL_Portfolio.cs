@@ -28,7 +28,7 @@ namespace StockManagement.BusinessLayer
                 return new ServiceResult<PortfolioAccount>()
                 {
                     Data = null,
-                    Message = "Portfolio '" + portfolio.AccountName.ToString() + "' Added Successfully...!!! ",
+                    Message = "Portfolio " + portfolio.AccountName.ToString() + " Added Successfully...!!! ",
                     Status = ResultStatus.Success
                 };
             }

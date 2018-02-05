@@ -68,7 +68,7 @@
                                 </select>
                             </td>
                             <td>
-                                <input id="OwnershipDate" class="form-control input-sm " autocomplete="off" placeholder="____/__/__" />
+                                <input id="OwnershipDate" class="form-control input-sm datemask " autocomplete="off" placeholder="____/__/__" />
                             </td>
                             <td>
                                 <input id="Qty" class="form-control input-sm  text-right get-amount" autocomplete="off" />
@@ -126,6 +126,13 @@
         var index = parseInt($table.find('tr').length) - 1;
         var addtr = Addrow(index);
         $table.find('tr:eq(' + index + ')').before(addtr);
+        $this.closest('tr').find(':input').each(function () {
+            $(this).val('');
+        });
+    });
+
+    $('#btn-clear').click(function () {
+        $this = $(this);
         $this.closest('tr').find(':input').each(function () {
             $(this).val('');
         });

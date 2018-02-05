@@ -53,7 +53,7 @@ namespace manjilProj.Areas.Areas.Controllers
                 }
                 else
                 {
-                    return Json(new ServiceResult<Stock>() { Data = null, Message = ModelState.Values.SelectMany(a => a.Errors).Select(b => b.ErrorMessage).ToString(), Status = ResultStatus.Failed });
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = string.Join(" \n", ModelState.Values.SelectMany(a => a.Errors).Select(b => b.ErrorMessage)), Status = ResultStatus.Failed });
                 }
 
 
@@ -90,7 +90,7 @@ namespace manjilProj.Areas.Areas.Controllers
                 }
                 else
                 {
-                    return Json(new ServiceResult<Stock>() { Data = null, Message = ModelState.Values.SelectMany(x => x.Errors).Select(a => a.ErrorMessage).ToString(), Status = result.Status });
+                    return Json(new ServiceResult<Stock>() { Data = null, Message = string.Join(" \n", ModelState.Values.SelectMany(x => x.Errors).Select(a => a.ErrorMessage)), Status = result.Status });
                 }
             }
             catch (Exception ex)
